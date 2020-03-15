@@ -353,7 +353,7 @@ class _AccountDetail extends State<AccountDetail>
                               ),
                               Container(
                                   margin:
-                                      EdgeInsets.only(left: 10.0, right: 15.0),
+                                      EdgeInsets.only(left: 5.0, right: 10.0),
                                   child: Text(
                                     title,
                                     style: TextStyle(

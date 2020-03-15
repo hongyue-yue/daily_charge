@@ -47,9 +47,7 @@ class FileStorage {
       print(billStr);
       await file.writeAsString(billStr);
       return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) {}
   }
 }
 

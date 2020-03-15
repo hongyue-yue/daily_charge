@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:daily_charge/compenonts/selectPicker.dart';
 import 'package:daily_charge/util/common.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 import 'pickerData.dart';
 
 class NewSpend extends StatefulWidget {
@@ -14,8 +16,7 @@ class NewSpend extends StatefulWidget {
 class _NewSpend extends State<NewSpend> {
   String _classification = "餐饮支出 > 早午晚餐";
   String _account = "现金(CNY)";
-  TextEditingController _amountController = TextEditingController()
-    ..text = "0.00";
+  TextEditingController _amountController = TextEditingController();
   TextEditingController _remarkController = TextEditingController();
   var date = new DateTime.now();
 
@@ -23,14 +24,26 @@ class _NewSpend extends State<NewSpend> {
     var spend = {
       "key": date.millisecondsSinceEpoch,
       "category": "spend",
-      "amount": _amountController.text,
+      "amount":
+          _amountController.text != null ? _amountController.text : '0.00',
       "classification": _classification,
       "account": _account,
       "remark": _remarkController.text,
       "time": formatDate(date, "yyyy-MM-dd")
     };
     try {
-      await storage.writeBill(spend, spend["time"]);
+      var res = await storage.writeBill(spend, spend["time"]);
+      print(res);
+      if (res) {
+        Fluttertoast.showToast(
+            msg: "保存成功！",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 2,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     } catch (e) {
       print(e);
     }
@@ -48,6 +61,8 @@ class _NewSpend extends State<NewSpend> {
               controller: _amountController,
               style: TextStyle(color: Colors.tealAccent[400], fontSize: 40.0),
               decoration: InputDecoration(
+                hintText: '0.00',
+                hintStyle: TextStyle(color: Colors.tealAccent[400]),
                 // 未获得焦点下划线颜色
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.tealAccent[400]),
@@ -57,6 +72,7 @@ class _NewSpend extends State<NewSpend> {
                   borderSide: BorderSide(color: Colors.tealAccent[400]),
                 ),
               ),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
             SelectPicker(
                 icon: Icons.widgets,
@@ -141,9 +157,10 @@ class _NewSpend extends State<NewSpend> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
-                  color: Colors.orange,
+                  color: Colors.amber,
                   textTheme: ButtonTextTheme.primary,
                   padding: EdgeInsets.only(left: 50, right: 50),
+                  splashColor: Colors.amber[300],
                   textColor: Colors.white,
                   shape: StadiumBorder(
                     side: BorderSide.none,
@@ -171,8 +188,7 @@ class NewIncome extends StatefulWidget {
 class _NewIncome extends State<NewIncome> {
   String _classification = "餐饮 > 餐饮补助";
   String _account = "现金(CNY)";
-  TextEditingController _amountController = TextEditingController()
-    ..text = "0.00";
+  TextEditingController _amountController = TextEditingController();
   TextEditingController _remarkController = TextEditingController();
   var date = new DateTime.now();
 
@@ -180,19 +196,32 @@ class _NewIncome extends State<NewIncome> {
     var spend = {
       "key": date.millisecondsSinceEpoch,
       "category": "income",
-      "amount": _amountController.text,
+      "amount":
+          _amountController.text != null ? _amountController.text : '0.00',
       "classification": _classification,
       "account": _account,
       "remark": _remarkController.text,
       "time": formatDate(date, "yyyy-MM-dd")
     };
     try {
-      await storage.writeBill(spend, spend["time"]);
+      var res = await storage.writeBill(spend, spend["time"]);
+      if (res) {
+        Fluttertoast.showToast(
+            msg: "保存成功！",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 2,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     } catch (e) {
       print(e);
     }
   }
 
+  static final WhitelistingTextInputFormatter digitsOnly =
+      WhitelistingTextInputFormatter(RegExp(r'\d+'));
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,6 +234,8 @@ class _NewIncome extends State<NewIncome> {
               controller: _amountController,
               style: TextStyle(color: Colors.red[700], fontSize: 40.0),
               decoration: InputDecoration(
+                hintText: '0.00',
+                hintStyle: TextStyle(color: Colors.red[700]),
                 // 未获得焦点下划线颜色
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.red[700]),
@@ -214,6 +245,7 @@ class _NewIncome extends State<NewIncome> {
                   borderSide: BorderSide(color: Colors.red[700]),
                 ),
               ),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
             SelectPicker(
                 icon: Icons.widgets,
@@ -299,10 +331,11 @@ class _NewIncome extends State<NewIncome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
-                  color: Colors.orange,
+                  color: Colors.amber,
                   textTheme: ButtonTextTheme.primary,
                   padding: EdgeInsets.only(left: 50, right: 50),
                   textColor: Colors.white,
+                  splashColor: Colors.amber[300],
                   shape: StadiumBorder(
                     side: BorderSide.none,
                   ),
