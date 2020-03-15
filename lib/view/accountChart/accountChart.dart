@@ -20,6 +20,7 @@ class _AccountChart extends State<AccountChart> {
         length: 2,
         child: Scaffold(
             appBar: AppBar(
+                title: Text('图表',),
                 bottom: TabBar(
                     isScrollable: true,
                     labelColor: Colors.lime,

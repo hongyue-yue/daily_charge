@@ -229,13 +229,14 @@ class AccountWaterState extends State<AccountWater> {
     }
   }
 
-  turnPage(AmountData amountData, String title) {
+  turnPage(AmountData amountData, String title, {bool hiddenPicker = true}) {
     Navigator.push(
         context,
         new MaterialPageRoute(
             fullscreenDialog: true,
             builder: (context) {
-              return AccountDetail(title: title, data: amountData);
+              return AccountDetail(
+                  title: title, data: amountData, hiddenPicker: hiddenPicker);
             }));
   }
 
@@ -316,7 +317,8 @@ class AccountWaterState extends State<AccountWater> {
                 iconColor: Colors.lightBlue[400],
                 data: appState.todayData.amountData,
                 timeRange: appState.todayData.dateRange,
-                onTap: () => turnPage(appState.todayData, "今天"),
+                onTap: () =>
+                    turnPage(appState.todayData, appState.todayData.dateRange),
               ), //'${date.month.toString()}月${date.day.toString()}日');
               AccountWaterCard(
                   title: "本周",
@@ -324,21 +326,24 @@ class AccountWaterState extends State<AccountWater> {
                   iconColor: Colors.deepOrange[400],
                   data: appState.weekData.amountData,
                   timeRange: appState.weekData.dateRange,
-                  onTap: () => turnPage(appState.weekData, "本周")),
+                  onTap: () =>
+                      turnPage(appState.weekData, appState.weekData.dateRange)),
               AccountWaterCard(
                   title: "本月",
                   icon: Icons.donut_large,
                   iconColor: Colors.amber[400],
                   data: appState.monthData.amountData,
                   timeRange: appState.monthData.dateRange,
-                  onTap: () => turnPage(appState.monthData, "本月")),
+                  onTap: () => turnPage(
+                      appState.monthData, appState.monthData.dateRange)),
               AccountWaterCard(
                   title: "上月",
                   icon: Icons.memory,
                   iconColor: Colors.pink[400],
                   data: appState.lastMonthData.amountData,
                   timeRange: appState.lastMonthData.dateRange,
-                  onTap: () => turnPage(appState.lastMonthData, "上月"))
+                  onTap: () =>
+                      turnPage(appState.lastMonthData, '', hiddenPicker: false))
             ]),
           );
         });

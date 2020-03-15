@@ -39,8 +39,11 @@ class _SelectPicker extends State<SelectPicker> {
         adapter: PickerDataAdapter<String>(
             pickerdata: JsonDecoder().convert(_pickerData)),
         changeToFirst: true,
-        hideHeader: true,
-        selectedTextStyle: TextStyle(color: Colors.blue),
+        hideHeader: false,
+        selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 18),
+        textStyle: TextStyle(color: Colors.teal[900], fontSize: 16),
+        confirmText: "确定",
+        cancelText: "取消",
         onConfirm: (Picker picker, List value) {
           var arr = picker.adapter.text.split(",");
           List currentTipsTextARR = [
@@ -48,14 +51,9 @@ class _SelectPicker extends State<SelectPicker> {
             arr[1].replaceAll(RegExp(r"\[|\]|\s"), "")
           ];
           _selectChange(currentTipsTextARR);
-        }).showDialog(context);
+        }).showModal(context);
   }
 
-  // @override
-  // void didUpdateWidget(SelectPicker oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   print("didUpdateWidget");
-  // }
   @override
   Widget build(BuildContext context) {
     return Container(
